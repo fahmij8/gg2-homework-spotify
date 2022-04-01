@@ -1,110 +1,58 @@
-import { Component } from "react";
-import playlistData from "data";
+import { useState, useEffect } from "react";
+import AppHeader from "components/AppHeader";
+import Footer from "components/AppFooter";
 import Track from "components/Track";
 import Search from "components/Search";
 import Login from "components/Login";
-class App extends Component {
-    state = {
-        user: {
-            isLoggedIn: false,
-            access_token: null,
-            token_type: null,
-            expires_in: null,
-            state: null,
-            error: null,
-        },
-        search: {
-            result: null || playlistData,
-            offset: 0,
-        },
-    };
 
-    componentDidMount() {
-        // Check if there's query string in the url
-        let urlParams = window.location.hash.substring(1).split("&");
-        if (urlParams.length > 1) {
-            urlParams.forEach((param, index) => {
-                const [key, value] = param.split("=");
-                this.setState((prevState) => {
-                    return {
-                        user: {
-                            ...prevState.user,
-                            [key]: value,
-                        },
-                    };
-                });
-                if (index === urlParams.length - 1) {
-                    this.setState((prevState) => {
-                        return {
-                            user: {
-                                ...prevState.user,
-                                isLoggedIn: true,
-                            },
-                        };
-                    });
-                }
-            });
-        }
-    }
+function App() {
+    const [accessToken, setAccessToken] = useState(null);
+    const [tokenType, setTokenType] = useState(null);
+    const [searchResult, setSearchResult] = useState(
+        "Let's search something to add to your playlist"
+    );
+    const [searchOffset, setSearchOffset] = useState(0);
 
-    componentDidUpdate() {
-        console.log(this.state);
-        // Cleanup URL after updated state
-        if (this.state.user.isLoggedIn) {
+    useEffect(() => {
+        if (accessToken) {
             window.history.replaceState({}, "", "/");
+        } else {
+            let urlParams = window.location.hash.substring(1).split("&");
+            let params = {};
+            urlParams.forEach((param) => {
+                let keyValue = param.split("=");
+                params[keyValue[0]] = keyValue[1];
+            });
+            setAccessToken(params.access_token);
+            setTokenType(params.token_type);
         }
-    }
+    }, [accessToken]);
 
-    handleSearchResult = (resultSearch) => {
-        this.setState({
-            search: {
-                result: resultSearch,
-                offset: 0,
-            },
-        });
-    };
-
-    handlePagination = (offset) => {
-        this.setState((prevState) => {
-            return {
-                search: {
-                    offset:
-                        prevState.search.offset + offset <= 0
-                            ? 0
-                            : prevState.search.offset + offset,
-                    result: "Searching...",
-                },
-            };
-        });
-    };
-
-    render() {
-        return (
-            <div className="bg-zinc-800 min-h-screen py-6">
-                <h1 className="text-3xl text-center mt-0 font-semibold text-white">
-                    My Playlist
-                </h1>
-                <p className="text-center font-light text-white mt-0 mb-3">
-                    by Fahmi Jabbar (KM_G2FE4088)
-                </p>
-                {this.state.user.isLoggedIn ? (
-                    <div className="mt-8">
+    return (
+        <div className="bg-zinc-800 min-h-screen flex flex-col">
+            <AppHeader></AppHeader>
+            <div className="flex-grow">
+                {accessToken ? (
+                    <div className="my-8">
                         <Search
-                            authorization={`${this.state.user.token_type} ${this.state.user.access_token}`}
-                            offset={this.state.search.offset}
-                            searchResult={this.handleSearchResult}
+                            authorization={`${tokenType} ${accessToken}`}
+                            setSearchResult={setSearchResult}
+                            searchOffset={searchOffset}
+                            setSearchOffset={setSearchOffset}
                         />
                         <Track
-                            songData={this.state.search.result}
-                            pagination={this.handlePagination}
+                            songData={searchResult}
+                            searchOffset={searchOffset}
+                            setSearchOffset={setSearchOffset}
                         ></Track>
                     </div>
                 ) : (
                     <Login></Login>
                 )}
             </div>
-        );
-    }
+            <Footer></Footer>
+        </div>
+    );
 }
 
 export default App;

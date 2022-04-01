@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        font-family: Proxima Nova, system-ui, sans-serif;
+    }
+}
+
 * {
     @apply m-0 p-0 box-border;
 }

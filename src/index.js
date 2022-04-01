@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "tw-elements";
 import "./index.css";
+import "font-proxima-nova/style.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
