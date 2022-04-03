@@ -1,4 +1,4 @@
-import AppButton from "components/AppButton";
+import AppButton from "../AppButton";
 
 function TrackCard({ song, playlist, setPlaylist }) {
     return (

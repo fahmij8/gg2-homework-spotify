@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { API_URL } from "util";
+import { API_URL } from "../../util";
 
 function Search({
     authorization,

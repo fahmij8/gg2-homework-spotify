@@ -1,5 +1,5 @@
-import AppTrackCard from "components/AppTrackCard";
-import AppButton from "components/AppButton";
+import AppTrackCard from "../AppTrackCard";
+import AppButton from "../AppButton";
 import { faAnglesRight, faAnglesLeft } from "@fortawesome/free-solid-svg-icons";
 
 function Track({

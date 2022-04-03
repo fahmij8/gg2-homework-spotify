@@ -7,15 +7,15 @@ import {
     faChevronCircleLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { API_URL } from "util";
-import AppHeader from "components/AppHeader";
-import AppStepper from "components/AppStepper";
-import AppButton from "components/AppButton";
-import AppInput from "components/AppInput";
-import Footer from "components/AppFooter";
-import Track from "components/Track";
-import Search from "components/Search";
-import Login from "components/Login";
-import AppTextarea from "components/AppTextarea";
+import AppHeader from "./components/AppHeader";
+import AppStepper from "./components/AppStepper";
+import AppButton from "./components/AppButton";
+import AppInput from "./components/AppInput";
+import AppTextarea from "./components/AppTextarea";
+import Footer from "./components/AppFooter";
+import Track from "./components/Track";
+import Search from "./components/Search";
+import Login from "./components/Login";
 
 const menu = [
     {

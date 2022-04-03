@@ -1,4 +1,4 @@
-import spotifyLogo from "images/Spotify_Logo.png";
+import spotifyLogo from "../../images/Spotify_Logo.png";
 
 function AppHeader() {
     return (
