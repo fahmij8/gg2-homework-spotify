@@ -13,7 +13,7 @@ import AppButton from "./components/AppButton";
 import AppInput from "./components/AppInput";
 import AppTextarea from "./components/AppTextarea";
 import Footer from "./components/AppFooter";
-import Track from "./components/Track";
+import Track from "./components/Tracks";
 import Search from "./components/Search";
 import Login from "./components/Login";
 
