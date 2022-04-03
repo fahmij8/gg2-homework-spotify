@@ -1,4 +1,5 @@
 import { Component } from "react";
+import { LOGIN_URL } from "util";
 
 class Login extends Component {
     render() {
@@ -8,7 +9,7 @@ class Login extends Component {
                     Login first to use the service
                 </h2>
                 <a
-                    href={`https://accounts.spotify.com/authorize?client_id=${process.env.REACT_APP_SPOTIFY_CLIENT_ID}&response_type=token&redirect_uri=http://localhost:3000&scope=playlist-modify-private`}
+                    href={LOGIN_URL}
                     className="bg-green-500 hover:bg-green-600 px-5 py-2 text-sm leading-5 rounded-full font-semibold text-white block mx-auto w-fit mt-5 transition ease-in-out duration-75 hover:scale-105"
                 >
                     Login

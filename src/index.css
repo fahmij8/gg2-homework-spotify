@@ -9,5 +9,21 @@
 }
 
 * {
-    @apply m-0 p-0 box-border;
+    @apply m-0 p-0 box-border scroll-smooth;
+}
+
+::-webkit-scrollbar {
+    @apply w-[0.5rem];
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-zinc-800;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-gray-200/50;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-300/75;
 }
