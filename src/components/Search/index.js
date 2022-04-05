@@ -1,14 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { API_URL } from "../../util";
+import { fetchAPI } from "../../utils/helper";
 
-function Search({
-    authorization,
-    searchOffset,
-    setSearchOffset,
-    setSearchResult,
-}) {
+function Search({ searchOffset, setSearchOffset, setSearchResult }) {
     const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
@@ -26,15 +21,9 @@ function Search({
 
     const fetchResults = (searchOffsetArg) => {
         setSearchResult("Searching...");
-        fetch(
-            `${API_URL}/search?q=${searchQuery}&type=track&limit=10&market=ID&offset=${searchOffsetArg}`,
-            {
-                headers: {
-                    Authorization: authorization,
-                },
-            }
+        fetchAPI(
+            `/search?q=${searchQuery}&type=track&limit=10&market=ID&offset=${searchOffsetArg}`
         )
-            .then((response) => response.json())
             .then((data) => {
                 if (typeof data.error !== "undefined") {
                     setSearchResult(data.error.message);

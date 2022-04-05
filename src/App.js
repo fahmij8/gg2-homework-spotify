@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
-import {
-    faPencil,
-    faMusic,
-    faCheck,
-    faChevronCircleRight,
-    faChevronCircleLeft,
-} from "@fortawesome/free-solid-svg-icons";
-import { API_URL } from "util";
+import { useSelector, useDispatch } from "react-redux";
+import { setAccessToken, setTokenType, setUserId } from "./store/accountSlicer";
+import { MENU, fetchAPI } from "./utils";
 import AppHeader from "./components/AppHeader";
 import AppStepper from "./components/AppStepper";
 import AppButton from "./components/AppButton";
@@ -16,27 +11,17 @@ import Footer from "./components/AppFooter";
 import Track from "./components/Tracks";
 import Search from "./components/Search";
 import Login from "./components/Login";
-
-const menu = [
-    {
-        name: "Playlist Details",
-        icon: faPencil,
-    },
-    {
-        name: "Track Selection",
-        icon: faMusic,
-    },
-    {
-        name: "Confirmation",
-        icon: faCheck,
-    },
-];
+import {
+    faCheck,
+    faChevronCircleRight,
+    faChevronCircleLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 function App() {
+    const accessToken = useSelector((state) => state.account.accessToken);
+    const tokenType = useSelector((state) => state.account.tokenType);
+    const userId = useSelector((state) => state.account.userId);
     const [activeStep, setActiveStep] = useState(0);
-    const [accessToken, setAccessToken] = useState(null);
-    const [tokenType, setTokenType] = useState(null);
-    const [userId, setUserId] = useState(null);
     const [searchResult, setSearchResult] = useState(
         "Let's search something to add to your playlist"
     );
@@ -46,17 +31,14 @@ function App() {
     const [playlistTracks, setPlaylistTracks] = useState([]);
     const [submitPlaylistResult, setSubmitPlaylistResult] = useState({});
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         if (accessToken) {
             window.history.replaceState({}, "", "/");
-            fetch(`${API_URL}/me`, {
-                headers: {
-                    Authorization: `${tokenType} ${accessToken}`,
-                },
-            })
-                .then((response) => response.json())
+            fetchAPI("/me")
                 .then((data) => {
-                    setUserId(data.id);
+                    dispatch(setUserId(data.id));
                 })
                 .catch((error) => {
                     console.error(error);
@@ -68,27 +50,24 @@ function App() {
                 let keyValue = param.split("=");
                 params[keyValue[0]] = keyValue[1];
             });
-            setAccessToken(params.access_token);
-            setTokenType(params.token_type);
+            params.access_token &&
+                dispatch(setAccessToken(params.access_token));
+            params.token_type && dispatch(setTokenType(params.token_type));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accessToken]);
 
     const createPlaylist = () => {
         if (playlistName && playlistDescription && playlistTracks.length > 0) {
-            fetch(`${API_URL}/users/${userId}/playlists`, {
-                method: "POST",
-                headers: {
-                    Authorization: `${tokenType} ${accessToken}`,
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
+            fetchAPI(
+                `/users/${userId}/playlists`,
+                {
                     name: playlistName,
                     description: playlistDescription,
                     public: false,
-                }),
-            })
-                .then((response) => response.json())
+                },
+                "POST"
+            )
                 .then((addPlaylist) => {
                     if (typeof addPlaylist.error !== "undefined") {
                         console.error(addPlaylist.error.message);
@@ -98,17 +77,13 @@ function App() {
                         });
                     } else {
                         let playlistId = addPlaylist.id;
-                        fetch(`${API_URL}/playlists/${playlistId}/tracks`, {
-                            method: "POST",
-                            headers: {
-                                Authorization: `${tokenType} ${accessToken}`,
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
+                        fetchAPI(
+                            `/playlists/${playlistId}/tracks`,
+                            {
                                 uris: playlistTracks.map((track) => track.uri),
-                            }),
-                        })
-                            .then((response) => response.json())
+                            },
+                            "POST"
+                        )
                             .then((data) => {
                                 if (typeof data.error !== "undefined") {
                                     console.error(data.error.message);
@@ -155,7 +130,7 @@ function App() {
                 {accessToken ? (
                     <div className="mb-8">
                         <AppStepper
-                            steps={menu}
+                            steps={MENU}
                             activeStep={activeStep}
                         ></AppStepper>
                         {activeStep === 0 && (
@@ -271,7 +246,7 @@ function App() {
                                     buttonIconPosition="back"
                                 ></AppButton>
                             )}
-                            {activeStep < menu.length - 1 && (
+                            {activeStep < MENU.length - 1 && (
                                 <AppButton
                                     buttonTheme="primary"
                                     buttonText="Next Step"
@@ -284,7 +259,7 @@ function App() {
                                     buttonIconPosition="front"
                                 ></AppButton>
                             )}
-                            {activeStep === menu.length - 1 && (
+                            {activeStep === MENU.length - 1 && (
                                 <AppButton
                                     buttonTheme={"primary"}
                                     buttonText="Finish"
