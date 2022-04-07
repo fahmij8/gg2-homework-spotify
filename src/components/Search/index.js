@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
-import { fetchAPI } from "../../utils/helper";
+import { fetchAPI } from "utils/helper";
 
 function Search({ searchOffset, setSearchOffset, setSearchResult }) {
     const [searchQuery, setSearchQuery] = useState("");
