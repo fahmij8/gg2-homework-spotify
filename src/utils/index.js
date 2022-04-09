@@ -1,2 +1,2 @@
-export * from "./globalVariable";
-export * from "./helper";
+export * from './globalVariable';
+export * from './helper';
