@@ -5,7 +5,7 @@ export const REDIRECT_URI = process.env.REACT_APP_SPOTIFY_REDIRECT_URI;
 export const LOGIN_URL =
   `https://accounts.spotify.com/authorize?` +
   `client_id=${CLIENT_ID}&response_type=token&redirect_uri=${REDIRECT_URI}` +
-  `&scope=playlist-modify-private`;
+  `&scope=playlist-modify-private user-top-read`;
 export const API_URL = 'https://api.spotify.com/v1';
 export const MENU = [
   {

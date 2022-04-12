@@ -21,9 +21,7 @@ import toast, {Toaster} from 'react-hot-toast';
 function CreatePlaylist() {
   const userId = useSelector((state) => state.account.userId);
   const [activeStep, setActiveStep] = useState(0);
-  const [searchResult, setSearchResult] = useState(
-    'Lets search something to add to your playlist',
-  );
+  const [searchResult, setSearchResult] = useState('');
   const [searchOffset, setSearchOffset] = useState(0);
   const [playlistName, setPlaylistName] = useState('');
   const [playlistDescription, setPlaylistDescription] = useState('');
@@ -122,6 +120,18 @@ function CreatePlaylist() {
             'error',
           );
         });
+    } else if (userId === '') {
+      notify(
+        `Sorry, your user id are not listed on our end. 
+        Please contact author for further information`,
+        'error',
+      );
+    } else if (!playlistName) {
+      notify('Please enter a playlist name', 'error');
+    } else if (!playlistDescription) {
+      notify('Please enter a playlist description', 'error');
+    } else if (playlistTracks.length === 0) {
+      notify('Please add at least one track', 'error');
     }
   };
 
@@ -129,31 +139,43 @@ function CreatePlaylist() {
     <div className="mb-8">
       <AppStepper steps={MENU} activeStep={activeStep}></AppStepper>
       {activeStep === 0 && (
-        <div className="my-5 block mx-auto">
-          <AppInput
-            inputType="text"
-            inputPlaceholder="Playlist Name"
-            inputName="playlistName"
-            inputLabel="Playlist Name"
-            inputSize="medium"
-            inputRequired={true}
-            inputOnChange={(e) => setPlaylistName(e.target.value)}
-            inputValue={playlistName}
-          ></AppInput>
-          <AppTextarea
-            areaName="playlistDescription"
-            areaLabel="Playlist Description"
-            areaPlaceholder="Playlist Description"
-            areaSize="5"
-            areaRequired={true}
-            areaOnChange={(e) => setPlaylistDescription(e.target.value)}
-            areaValue={playlistDescription}
-          ></AppTextarea>
+        <div className="my-5 max-w-xl min-w-[200px] block mx-auto px-5">
+          <div className="flex justify-center">
+            <div className="block p-6 w-full rounded-lg shadow-lg bg-zinc-700">
+              <h5
+                className="text-zinc-50 text-xl text-center
+              leading-tight font-medium mb-2"
+              >
+                Enter your playlist detail
+              </h5>
+              <AppInput
+                inputType="text"
+                inputPlaceholder="Playlist Name"
+                inputName="playlistName"
+                inputLabel="Playlist Name"
+                inputSize="medium"
+                inputRequired={true}
+                inputOnChange={(e) => setPlaylistName(e.target.value)}
+                inputValue={playlistName}
+                autoComplete="off"
+              ></AppInput>
+              <AppTextarea
+                areaName="playlistDescription"
+                areaLabel="Playlist Description"
+                areaPlaceholder="Playlist Description"
+                areaSize="5"
+                areaRequired={true}
+                areaOnChange={(e) => setPlaylistDescription(e.target.value)}
+                areaValue={playlistDescription}
+              ></AppTextarea>
+            </div>
+          </div>
         </div>
       )}
       {activeStep === 1 && (
         <div className="my-5">
           <Search
+            searchResult={searchResult}
             setSearchResult={setSearchResult}
             searchOffset={searchOffset}
             setSearchOffset={setSearchOffset}
@@ -229,7 +251,10 @@ function CreatePlaylist() {
           )}
         </div>
       )}
-      <div className="mx-6 sm:mx-11 md:mx-20 flex justify-end my-7">
+      <div
+        className="max-w-xl min-w-[200px] mx-auto px-5
+      flex justify-end my-7"
+      >
         {activeStep > 0 && (
           <AppButton
             buttonTheme="primary"

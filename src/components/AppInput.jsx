@@ -26,6 +26,7 @@ function AppInput({
   inputRequired,
   inputDisabled,
   inputSize,
+  ...rest
 }) {
   let inputClassSize;
   if (inputSize === 'small') {
@@ -37,31 +38,32 @@ function AppInput({
   }
 
   return (
-    <div className="flex justify-center mx-6 sm:mx-11 md:mx-20">
-      <div className="mb-3 w-full max-w-md">
+    <>
+      {inputLabel && (
         <label
           htmlFor={inputName}
-          className="form-label inline-block mb-2 text-zinc-50"
+          className="form-label inline-block mt-4 mb-2 text-zinc-200"
         >
           {inputLabel}
         </label>
-        <input
-          type={inputType}
-          className={`form-control block w-full ${inputClassSize} text-gray-700
-          bg-white bg-clip-padding border border-solid border-gray-300 rounded 
-            transition ease-in-out m-0 focus:text-gray-700 focus:bg-white 
-          focus:border-green-600 focus:outline-none ${inputClassName}`}
-          id={inputName}
-          name={inputName}
-          placeholder={inputPlaceholder}
-          value={inputValue}
-          onChange={inputOnChange}
-          onBlur={inputOnBlur}
-          required={inputRequired}
-          disabled={inputDisabled}
-        />
-      </div>
-    </div>
+      )}
+      <input
+        type={inputType}
+        className={`form-control block w-full ${inputClassSize} text-zinc-200
+          bg-zinc-500 bg-clip-padding rounded shadow-lg focus:outline-none
+            transition ease-in-out m-0 focus:text-zinc-200 focus:bg-zinc-500 
+            focus:ring-2 ${inputClassName}`}
+        id={inputName}
+        name={inputName}
+        placeholder={inputPlaceholder}
+        value={inputValue}
+        onChange={inputOnChange}
+        onBlur={inputOnBlur}
+        required={inputRequired}
+        disabled={inputDisabled}
+        {...rest}
+      />
+    </>
   );
 }
 

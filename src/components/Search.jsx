@@ -1,8 +1,10 @@
 import React from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSearch} from '@fortawesome/free-solid-svg-icons';
 import {useEffect, useState} from 'react';
 import {fetchAPI} from 'utils/helper';
+import AppInput from 'components/AppInput';
+import AppButton from './AppButton';
+
 /**
  * Search component
  * @param  {number} {searchOffset
@@ -10,7 +12,12 @@ import {fetchAPI} from 'utils/helper';
  * @param  {void} setSearchResult
  * @return {JSX.Element}
  */
-function Search({searchOffset, setSearchOffset, setSearchResult}) {
+function Search({
+  searchResult,
+  searchOffset,
+  setSearchOffset,
+  setSearchResult,
+}) {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
@@ -18,7 +25,13 @@ function Search({searchOffset, setSearchOffset, setSearchResult}) {
       if (searchQuery) {
         fetchResults(searchOffset);
       } else {
-        setSearchResult('Lets search something to add to your playlist');
+        if (searchResult === '') {
+          fetchAPI('/me/top/tracks').then((data) => {
+            setSearchResult(data.items);
+          });
+        } else {
+          setSearchResult('No search query');
+        }
       }
     }, 500);
 
@@ -55,38 +68,32 @@ function Search({searchOffset, setSearchOffset, setSearchResult}) {
     <div className="flex justify-center">
       <div className="mb-3 md:max-w-md w-full mx-8">
         <form
-          className="input-group relative flex flex-wrap
-          items-stretch w-full mb-4"
+          className="flex mb-4"
           onSubmit={(event) => {
             event.preventDefault();
             setSearchOffset(0);
             fetchResults(searchOffset);
           }}
         >
-          <input
-            type="search"
-            className="form-control relative flex-auto min-w-0 block
-            w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white
-            bg-clip-padding rounded transition ease-in-out m-0
-          focus:text-gray-700 focus:bg-white focus:border-green-600
-            outline-none focus:outline-none focus:shadow-none shadow-none"
-            placeholder="Search"
-            aria-label="Search"
-            aria-describedby="button-search"
-            onChange={(event) => setSearchQuery(event.target.value)}
-          />
-          <button
-            className="btn px-6 py-2.5 bg-green-400 text-neutral-800
-            font-medium text-xs leading-tight uppercase rounded shadow-md
-          hover:bg-green-300 hover:shadow-lg focus:bg-green-300
-            focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-300
-            active:shadow-lg transition ease-in-out duration-75 hover:scale-105
-            flex items-center"
-            type="submit"
-            id="button-search"
-          >
-            <FontAwesomeIcon icon={faSearch} />
-          </button>
+          <AppButton
+            buttonTheme="secondary"
+            buttonSize="medium"
+            buttonType="submit"
+            buttonIcon={faSearch}
+            buttonIconPosition="front"
+            buttonClass="rounded-l-lg bg-zinc-500 text-white"
+          ></AppButton>
+          <AppInput
+            inputType="text"
+            inputPlaceholder="Artist, Songs, or Albums"
+            inputName="searchQuery"
+            inputSize="medium"
+            inputRequired={true}
+            inputOnChange={(e) => setSearchQuery(e.target.value)}
+            inputValue={searchQuery}
+            inputClassName="w-full rounded-none rounded-r-lg focus:!ring-0"
+            autoComplete="off"
+          ></AppInput>
         </form>
       </div>
     </div>

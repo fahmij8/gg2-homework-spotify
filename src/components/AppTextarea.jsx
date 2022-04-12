@@ -29,33 +29,30 @@ function AppTextarea({
   areaSize,
 }) {
   return (
-    <div className="flex justify-center mx-6 sm:mx-11 md:mx-20">
-      <div className="mb-3 w-full max-w-md">
-        <label
-          htmlFor={areaName}
-          className="form-label inline-block mb-2 text-zinc-50"
-        >
-          {areaLabel}
-        </label>
-        <textarea
-          type={areaType}
-          className={`form-control block w-full px-3 py-1.5 font-normal
-          text-gray-700 bg-white bg-clip-padding border border-solid 
-          border-gray-300 rounded transition ease-in-out m-0 
-          focus:text-gray-700 focus:bg-white focus:border-green-600 
+    <>
+      <label
+        htmlFor={areaName}
+        className="form-label inline-block mt-4 mb-2 text-zinc-200"
+      >
+        {areaLabel}
+      </label>
+      <textarea
+        type={areaType}
+        className={`form-control block w-full px-3 py-1.5 font-normal
+          text-zinc-200 bg-zinc-500 bg-clip-padding rounded shadow-lg m-0 
+            transition ease-in-out focus:text-zinc-200 focus:bg-zinc-500 focus:ring-2
             focus:outline-none ${areaClassName}`}
-          id={areaName}
-          name={areaName}
-          placeholder={areaPlaceholder}
-          onChange={areaOnChange}
-          onBlur={areaOnBlur}
-          required={areaRequired}
-          disabled={areaDisabled}
-          rows={areaSize}
-          value={areaValue}
-        ></textarea>
-      </div>
-    </div>
+        id={areaName}
+        name={areaName}
+        placeholder={areaPlaceholder}
+        onChange={areaOnChange}
+        onBlur={areaOnBlur}
+        required={areaRequired}
+        disabled={areaDisabled}
+        rows={areaSize}
+        value={areaValue}
+      ></textarea>
+    </>
   );
 }
 

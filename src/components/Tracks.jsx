@@ -2,6 +2,7 @@ import React from 'react';
 import AppTrackCard from './AppTrackCard';
 import AppButton from './AppButton';
 import {faAnglesRight, faAnglesLeft} from '@fortawesome/free-solid-svg-icons';
+import {motion} from 'framer-motion';
 
 /**
  * Tracks component
@@ -21,28 +22,42 @@ function Track({
   setSearchOffset,
   withPagination,
 }) {
+  const trackListVariants = {
+    hidden: {opacity: 0},
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+      },
+    },
+  };
+
   return (
     <div className="flex flex-col mx-6 sm:mx-11 md:mx-20">
       {typeof songData === 'string' && (
         <h2 className="text-md text-center font-bold text-white">{songData}</h2>
       )}
-      <div
-        className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-3
+      {typeof songData === 'object' && songData.length > 0 && (
+        <motion.div
+          initial="hidden"
+          animate="show"
+          variants={trackListVariants}
+          className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-3
       gap-y-5 xl:gap-x-6"
-      >
-        {typeof songData === 'object' &&
-          songData.length > 0 &&
-          songData.map((song) => {
+        >
+          {songData.map((song) => {
             return (
               <AppTrackCard
                 key={song.id}
                 song={song}
                 playlist={playlist}
                 setPlaylist={setPlaylist}
+                index={song.id}
               ></AppTrackCard>
             );
           })}
-      </div>
+        </motion.div>
+      )}
       {typeof songData === 'object' && songData.length > 0 && withPagination && (
         <div className="flex items-center justify-center mt-8">
           <div
