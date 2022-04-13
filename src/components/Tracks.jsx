@@ -1,7 +1,5 @@
 import React from 'react';
 import AppTrackCard from './AppTrackCard';
-import AppButton from './AppButton';
-import {faAnglesRight, faAnglesLeft} from '@fortawesome/free-solid-svg-icons';
 import {motion} from 'framer-motion';
 
 /**
@@ -9,19 +7,9 @@ import {motion} from 'framer-motion';
  * @param  {object} playlist
  * @param  {void} setPlaylist
  * @param  {object} songData
- * @param  {number} searchOffset
- * @param  {void} setSearchOffset
- * @param  {boolean} withPagination
  * @return {JSX.Element}
  */
-function Track({
-  playlist,
-  setPlaylist,
-  songData,
-  searchOffset,
-  setSearchOffset,
-  withPagination,
-}) {
+function Track({playlist, setPlaylist, songData}) {
   const trackListVariants = {
     hidden: {opacity: 0},
     show: {
@@ -52,44 +40,10 @@ function Track({
                 song={song}
                 playlist={playlist}
                 setPlaylist={setPlaylist}
-                index={song.id}
               ></AppTrackCard>
             );
           })}
         </motion.div>
-      )}
-      {typeof songData === 'object' && songData.length > 0 && withPagination && (
-        <div className="flex items-center justify-center mt-8">
-          <div
-            className="inline-flex shadow-md hover:shadow-lg focus:shadow-lg"
-            role="group"
-          >
-            {searchOffset > 0 && (
-              <AppButton
-                buttonTheme="primary"
-                buttonIcon={faAnglesLeft}
-                buttonIconPosition="back"
-                buttonSize="medium"
-                buttonClass="rounded-full mr-2"
-                buttonClick={() => {
-                  setSearchOffset(
-                    searchOffset - 10 < 0 ? 0 : searchOffset - 10,
-                  );
-                }}
-              ></AppButton>
-            )}
-            <AppButton
-              buttonTheme="primary"
-              buttonIcon={faAnglesRight}
-              buttonIconPosition="front"
-              buttonSize="medium"
-              buttonClass="rounded-full"
-              buttonClick={() => {
-                setSearchOffset(searchOffset + 10);
-              }}
-            ></AppButton>
-          </div>
-        </div>
       )}
     </div>
   );

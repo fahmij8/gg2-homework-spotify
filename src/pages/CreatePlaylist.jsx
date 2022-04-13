@@ -1,10 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import AppStepper from 'components/AppStepper';
-import AppInput from 'components/AppInput';
 import AppButton from 'components/AppButton';
-import AppTextarea from 'components/AppTextarea';
-import Track from 'components/Tracks';
-import Search from 'components/Search';
+import CreatePlaylistSearch from 'components/CreatePlaylistSearch';
+import CreatePlaylistForm from 'components/CreatePlaylistForm';
+import Tracks from 'components/Tracks';
 import {MENU, fetchAPI} from 'utils';
 import {useSelector, useDispatch} from 'react-redux';
 import {setUserId} from 'store/accountSlicer';
@@ -139,56 +138,22 @@ function CreatePlaylist() {
     <div className="mb-8">
       <AppStepper steps={MENU} activeStep={activeStep}></AppStepper>
       {activeStep === 0 && (
-        <div className="my-5 max-w-xl min-w-[200px] block mx-auto px-5">
-          <div className="flex justify-center">
-            <div className="block p-6 w-full rounded-lg shadow-lg bg-zinc-700">
-              <h5
-                className="text-zinc-50 text-xl text-center
-              leading-tight font-medium mb-2"
-              >
-                Enter your playlist detail
-              </h5>
-              <AppInput
-                inputType="text"
-                inputPlaceholder="Playlist Name"
-                inputName="playlistName"
-                inputLabel="Playlist Name"
-                inputSize="medium"
-                inputRequired={true}
-                inputOnChange={(e) => setPlaylistName(e.target.value)}
-                inputValue={playlistName}
-                autoComplete="off"
-              ></AppInput>
-              <AppTextarea
-                areaName="playlistDescription"
-                areaLabel="Playlist Description"
-                areaPlaceholder="Playlist Description"
-                areaSize="5"
-                areaRequired={true}
-                areaOnChange={(e) => setPlaylistDescription(e.target.value)}
-                areaValue={playlistDescription}
-              ></AppTextarea>
-            </div>
-          </div>
-        </div>
+        <CreatePlaylistSearch
+          searchResult={searchResult}
+          setSearchResult={setSearchResult}
+          searchOffset={searchOffset}
+          setSearchOffset={setSearchOffset}
+          playlistTracks={playlistTracks}
+          setPlaylistTracks={setPlaylistTracks}
+        ></CreatePlaylistSearch>
       )}
       {activeStep === 1 && (
-        <div className="my-5">
-          <Search
-            searchResult={searchResult}
-            setSearchResult={setSearchResult}
-            searchOffset={searchOffset}
-            setSearchOffset={setSearchOffset}
-          />
-          <Track
-            playlist={playlistTracks}
-            setPlaylist={setPlaylistTracks}
-            songData={searchResult}
-            searchOffset={searchOffset}
-            setSearchOffset={setSearchOffset}
-            withPagination={true}
-          ></Track>
-        </div>
+        <CreatePlaylistForm
+          playlistName={playlistName}
+          setPlaylistName={setPlaylistName}
+          playlistDescription={playlistDescription}
+          setPlaylistDescription={setPlaylistDescription}
+        ></CreatePlaylistForm>
       )}
       {activeStep === 2 && (
         <div className="my-5">
@@ -237,7 +202,7 @@ function CreatePlaylist() {
           </div>
           {submitPlaylistResult.status === undefined && (
             <>
-              <Track
+              <Tracks
                 playlist={playlistTracks}
                 setPlaylist={setPlaylistTracks}
                 songData={
@@ -245,8 +210,7 @@ function CreatePlaylist() {
                     ? playlistTracks
                     : 'Please select some tracks'
                 }
-                withPagination={false}
-              ></Track>
+              ></Tracks>
             </>
           )}
         </div>

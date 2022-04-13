@@ -6,7 +6,7 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
-import {AnimatePresence} from 'framer-motion';
+
 import AppHeader from 'components/AppHeader';
 import AppFooter from 'components/AppFooter';
 import Login from 'pages/Login';
@@ -20,38 +20,36 @@ function App() {
   const accessToken = useSelector((state) => state.account.accessToken);
 
   return (
-    <AnimatePresence>
-      <div
-        className="bg-gradient-to-b from-green-900 via-zinc-800 to-zinc-900
+    <div
+      className="bg-gradient-to-b from-green-900 via-zinc-800 to-zinc-900
       min-h-screen flex flex-col"
-      >
-        <AppHeader></AppHeader>
-        <div className="flex-grow">
-          <Router>
-            <Switch>
-              <Route path="/create-playlist">
-                {accessToken ? (
-                  <CreatePlaylist></CreatePlaylist>
-                ) : (
-                  <Redirect push to="/"></Redirect>
-                )}
-              </Route>
-              <Route exact path="/">
-                {accessToken ? (
-                  <Redirect push to="/create-playlist"></Redirect>
-                ) : (
-                  <Login></Login>
-                )}
-              </Route>
-              <Route path="*">
-                <Redirect to="/"></Redirect>
-              </Route>
-            </Switch>
-          </Router>
-        </div>
-        <AppFooter></AppFooter>
+    >
+      <AppHeader></AppHeader>
+      <div className="flex-grow">
+        <Router>
+          <Switch>
+            <Route path="/create-playlist">
+              {accessToken ? (
+                <CreatePlaylist></CreatePlaylist>
+              ) : (
+                <Redirect push to="/"></Redirect>
+              )}
+            </Route>
+            <Route exact path="/">
+              {accessToken ? (
+                <Redirect push to="/create-playlist"></Redirect>
+              ) : (
+                <Login></Login>
+              )}
+            </Route>
+            <Route path="*">
+              <Redirect to="/"></Redirect>
+            </Route>
+          </Switch>
+        </Router>
       </div>
-    </AnimatePresence>
+      <AppFooter></AppFooter>
+    </div>
   );
 }
 

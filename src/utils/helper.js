@@ -19,6 +19,7 @@ export const fetchAPI = (uri, body, method) => {
         body: body ? JSON.stringify(body) : undefined,
       });
       const data = await response.json();
+      console.log(data);
       resolve(data);
     } catch (error) {
       console.error(error);

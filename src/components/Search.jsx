@@ -26,7 +26,7 @@ function Search({
         fetchResults(searchOffset);
       } else {
         if (searchResult === '') {
-          fetchAPI('/me/top/tracks').then((data) => {
+          fetchAPI('/me/top/tracks?limit=12').then((data) => {
             setSearchResult(data.items);
           });
         } else {
@@ -44,7 +44,7 @@ function Search({
   const fetchResults = (searchOffsetArg) => {
     setSearchResult('Searching...');
     fetchAPI(
-      `/search?q=${searchQuery}&type=track&limit=10` +
+      `/search?q=${searchQuery}&type=track&limit=12` +
         `&market=ID&offset=${searchOffsetArg}`,
     )
       .then((data) => {

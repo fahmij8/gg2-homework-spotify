@@ -9,12 +9,12 @@ export const LOGIN_URL =
 export const API_URL = 'https://api.spotify.com/v1';
 export const MENU = [
   {
-    name: 'Playlist Details',
-    icon: faPencil,
-  },
-  {
     name: 'Track Selection',
     icon: faMusic,
+  },
+  {
+    name: 'Playlist Details',
+    icon: faPencil,
   },
   {
     name: 'Confirmation',
