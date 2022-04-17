@@ -1,24 +1,34 @@
-import React from 'react';
 import AppButton from './AppButton';
 import {motion} from 'framer-motion';
+import {TrackCardProps} from 'types';
+import {useAppSelector, useAppDispatch} from 'hooks';
+import {setPlaylistTracks} from 'store/spotifySlicer';
 
 /**
  * AppTrackCard component
- * @param  {object} song
- * @param  {object} playlist
- * @param  {void} setPlaylist
+ * @param  {object} props
  * @return {JSX.Element}
  */
-function TrackCard({song, playlist, setPlaylist}) {
+function TrackCard({song}: TrackCardProps): JSX.Element {
   const itemVariant = {
     hidden: {opacity: 0},
     show: {opacity: 1},
   };
+  const playlistTracks = useAppSelector(
+    (state) => state.spotify.playlistTracks,
+  );
+  const dispatch = useAppDispatch();
+
+  const isSongInPlaylist = (song: TrackCardProps['song']): boolean => {
+    return playlistTracks.some((track) => track.id === song.id);
+  };
 
   return (
     <motion.div
-      className="flex flex-row items-center border border-[#ffffff50]
-    rounded-lg p-2 hover:bg-zinc-700 "
+      className={
+        `flex flex-row items-center border border-[#ffffff50] ` +
+        `rounded-lg p-2 hover:bg-zinc-700 `
+      }
       variants={itemVariant}
     >
       <div className="basis-20 shrink-0">
@@ -50,13 +60,19 @@ function TrackCard({song, playlist, setPlaylist}) {
             {song.album.name}
           </a>
         </h4>
-        {playlist.includes(song) ? (
+        {isSongInPlaylist(song) ? (
           <AppButton
             buttonTheme="danger"
             buttonText="Remove"
             buttonSize="small"
             buttonClick={() => {
-              setPlaylist(playlist.filter((eachTrack) => eachTrack !== song));
+              dispatch(
+                setPlaylistTracks(
+                  playlistTracks.filter(
+                    (eachTrack) => eachTrack !== song,
+                  ) as never,
+                ),
+              );
             }}
             buttonClass="rounded-lg mt-1"
           ></AppButton>
@@ -66,7 +82,7 @@ function TrackCard({song, playlist, setPlaylist}) {
             buttonText="Add"
             buttonSize="small"
             buttonClick={() => {
-              setPlaylist([...playlist, song]);
+              dispatch(setPlaylistTracks([...playlistTracks, song] as never));
             }}
             buttonClass="rounded-lg mt-1"
           ></AppButton>

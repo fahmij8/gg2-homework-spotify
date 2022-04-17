@@ -1,22 +1,11 @@
-import React from 'react';
+import {TextAreaProps} from 'types';
 
 /**
  * AppTextarea component
- * @param  {string} {areaType
- * @param  {string} areaName
- * @param  {string} areaLabel
- * @param  {string} areaValue
- * @param  {string} areaPlaceholder
- * @param  {void} areaOnChange
- * @param  {void} areaOnBlur
- * @param  {string} areaClassName
- * @param  {string} areaRequired
- * @param  {string} areaDisabled
- * @param  {string} areaSize
+ * @param  {object} props
  * @return {JSX.Element}
  */
 function AppTextarea({
-  areaType,
   areaName,
   areaLabel,
   areaValue,
@@ -27,7 +16,7 @@ function AppTextarea({
   areaRequired,
   areaDisabled,
   areaSize,
-}) {
+}: TextAreaProps): JSX.Element {
   return (
     <>
       <label
@@ -37,11 +26,12 @@ function AppTextarea({
         {areaLabel}
       </label>
       <textarea
-        type={areaType}
-        className={`form-control block w-full px-3 py-1.5 font-normal
-          text-zinc-200 bg-zinc-500 bg-clip-padding rounded shadow-lg m-0 
-            transition ease-in-out focus:text-zinc-200 focus:bg-zinc-500 focus:ring-2
-            focus:outline-none ${areaClassName}`}
+        className={
+          `form-control block w-full px-3 py-1.5 font-normal ` +
+          `text-zinc-200 bg-zinc-500 bg-clip-padding rounded shadow-lg m-0 ` +
+          `transition ease-in-out focus:text-zinc-200 focus:bg-zinc-500 focus:ring-2 ` +
+          `focus:outline-none ${areaClassName}`
+        }
         id={areaName}
         name={areaName}
         placeholder={areaPlaceholder}

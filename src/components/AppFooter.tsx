@@ -1,9 +1,8 @@
-import React from 'react';
 /**
  * AppFooter component
- * @return {JSX.Component}
+ * @return {JSX.Element}
  */
-function Footer() {
+function Footer(): JSX.Element {
   return (
     <footer className="text-center lg:text-left">
       <div className="text-slate-300 text-center p-2 text-xs">

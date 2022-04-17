@@ -1,22 +1,23 @@
-import React, {useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import {useEffect} from 'react';
+import {useAppDispatch} from 'hooks';
 import {setAccessToken, setTokenType} from 'store/accountSlicer';
 import {LOGIN_URL} from 'utils';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpotify} from '@fortawesome/free-brands-svg-icons';
+import {GlobalObject} from 'types';
 
 /**
  * Login component
  * @return {JSX.Element}
  */
-function Login() {
-  const dispatch = useDispatch();
+function Login(): JSX.Element {
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const urlParams = window.location.hash.substring(1).split('&');
-    const params = {};
-    urlParams.forEach((param) => {
-      const keyValue = param.split('=');
+    const urlParams: string[] = window.location.hash.substring(1).split('&');
+    const params: GlobalObject = {};
+    urlParams.forEach((param: string) => {
+      const keyValue: string[] = param.split('=');
       params[keyValue[0]] = keyValue[1];
     });
     params.access_token && dispatch(setAccessToken(params.access_token));
@@ -31,9 +32,11 @@ function Login() {
       </h2>
       <a
         href={LOGIN_URL}
-        className="bg-green-500 hover:bg-green-600 px-5 py-2 text-sm
-        leading-5 rounded-full font-semibold text-white block mx-auto
-        w-fit mt-5 transition ease-in-out duration-75 hover:scale-105"
+        className={
+          `bg-green-500 hover:bg-green-600 px-5 py-2 text-sm` +
+          `leading-5 rounded-full font-semibold text-white block mx-auto` +
+          ` w-fit mt-5 transition ease-in-out duration-75 hover:scale-105`
+        }
       >
         <FontAwesomeIcon icon={faSpotify} className="mr-1"></FontAwesomeIcon>
         Login with Spotify

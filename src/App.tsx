@@ -1,12 +1,10 @@
-import React from 'react';
-import {useSelector} from 'react-redux';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
-
+import {useAppSelector} from 'hooks';
 import AppHeader from 'components/AppHeader';
 import AppFooter from 'components/AppFooter';
 import Login from 'pages/Login';
@@ -16,13 +14,17 @@ import CreatePlaylist from 'pages/CreatePlaylist';
  * App component
  * @return {JSX.Element}
  */
-function App() {
-  const accessToken = useSelector((state) => state.account.accessToken);
+function App(): JSX.Element {
+  const accessToken = useAppSelector((state) => state.account.accessToken);
 
   return (
     <div
-      className="bg-gradient-to-b from-green-900 via-zinc-800 to-zinc-900
-      min-h-screen flex flex-col"
+      className="min-h-screen flex flex-col"
+      style={{
+        backgroundImage:
+          `linear-gradient(to right bottom, #205234, #1b4b37, #1a4337, #1d3c36, ` +
+          `#213432, #223031, #242d2e, #26292a, #26292a, #26282a, #26282a, #27272a)`,
+      }}
     >
       <AppHeader></AppHeader>
       <div className="flex-grow">

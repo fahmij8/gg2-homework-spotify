@@ -1,17 +1,7 @@
-import React from 'react';
+import {InputProps} from 'types';
 /**
  * AppInput component
- * @param  {string} {inputType
- * @param  {string} inputName
- * @param  {string} inputLabel
- * @param  {string} inputValue
- * @param  {string} inputPlaceholder
- * @param  {void} inputOnChange
- * @param  {void} inputOnBlur
- * @param  {string} inputClassName
- * @param  {string} inputRequired
- * @param  {string} inputDisabled
- * @param  {string} inputSize
+ * @param  {object} props
  * @return {JSX.Element}
  */
 function AppInput({
@@ -27,14 +17,14 @@ function AppInput({
   inputDisabled,
   inputSize,
   ...rest
-}) {
+}: InputProps): JSX.Element {
   let inputClassSize;
   if (inputSize === 'small') {
-    inputClassSize = 'py-1 px-2 text-xs';
+    inputClassSize = `py-1 px-2 text-xs`;
   } else if (inputSize === 'medium') {
-    inputClassSize = 'py-1.5 px-3 text-base';
+    inputClassSize = `py-1.5 px-3 text-base`;
   } else if (inputSize === 'large') {
-    inputClassSize = 'py-4 px-2 text-xl';
+    inputClassSize = `py-4 px-2 text-xl`;
   }
 
   return (
@@ -42,17 +32,19 @@ function AppInput({
       {inputLabel && (
         <label
           htmlFor={inputName}
-          className="form-label inline-block mt-4 mb-2 text-zinc-200"
+          className={`form-label inline-block mt-4 mb-2 text-zinc-200`}
         >
           {inputLabel}
         </label>
       )}
       <input
         type={inputType}
-        className={`form-control block w-full ${inputClassSize} text-zinc-200
-          bg-zinc-500 bg-clip-padding rounded shadow-lg focus:outline-none
-            transition ease-in-out m-0 focus:text-zinc-200 focus:bg-zinc-500 
-            focus:ring-2 ${inputClassName}`}
+        className={
+          `form-control block w-full ${inputClassSize} text-zinc-200 ` +
+          `bg-zinc-500 bg-clip-padding rounded shadow-lg focus:outline-none ` +
+          `transition ease-in-out m-0 focus:text-zinc-200 focus:bg-zinc-500 ` +
+          `focus:ring-2 ${inputClassName}`
+        }
         id={inputName}
         name={inputName}
         placeholder={inputPlaceholder}

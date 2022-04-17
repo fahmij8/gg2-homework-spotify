@@ -1,10 +1,10 @@
-import React from 'react';
 import spotifyLogo from 'images/Spotify_Logo.png';
+
 /**
  * AppHeader component
  * @return {JSX.Element}
  */
-function AppHeader() {
+function AppHeader(): JSX.Element {
   return (
     <div className="pt-8">
       <img

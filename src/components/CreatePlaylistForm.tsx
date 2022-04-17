@@ -1,17 +1,19 @@
-import React from 'react';
 import AppInput from './AppInput';
 import AppTextarea from './AppTextarea';
+import {useAppDispatch, useAppSelector} from 'hooks';
+import {setPlaylistName, setPlaylistDescription} from 'store/spotifySlicer';
 
 /**
  * CreatePlaylistForm component
  * @return {JSX.Element}
  */
-function CreatePlaylistForm({
-  playlistName,
-  setPlaylistName,
-  playlistDescription,
-  setPlaylistDescription,
-}) {
+function CreatePlaylistForm(): JSX.Element {
+  const playlistName = useAppSelector((state) => state.spotify.playlistName);
+  const playlistDescription = useAppSelector(
+    (state) => state.spotify.playlistDescription,
+  );
+  const dispatch = useAppDispatch();
+
   return (
     <div className="my-5 max-w-xl min-w-[200px] block mx-auto px-5">
       <div className="flex justify-center">
@@ -29,7 +31,7 @@ function CreatePlaylistForm({
             inputLabel="Playlist Name"
             inputSize="medium"
             inputRequired={true}
-            inputOnChange={(e) => setPlaylistName(e.target.value)}
+            inputOnChange={(e) => dispatch(setPlaylistName(e.target.value))}
             inputValue={playlistName}
             autoComplete="off"
             minLength="10"
@@ -38,9 +40,11 @@ function CreatePlaylistForm({
             areaName="playlistDescription"
             areaLabel="Playlist Description"
             areaPlaceholder="Playlist Description"
-            areaSize="5"
+            areaSize={5}
             areaRequired={true}
-            areaOnChange={(e) => setPlaylistDescription(e.target.value)}
+            areaOnChange={(e) =>
+              dispatch(setPlaylistDescription(e.target.value))
+            }
             areaValue={playlistDescription}
           ></AppTextarea>
         </div>

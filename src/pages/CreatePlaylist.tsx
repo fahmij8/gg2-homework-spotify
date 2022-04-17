@@ -1,42 +1,67 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import AppStepper from 'components/AppStepper';
 import AppButton from 'components/AppButton';
 import CreatePlaylistSearch from 'components/CreatePlaylistSearch';
 import CreatePlaylistForm from 'components/CreatePlaylistForm';
 import Tracks from 'components/Tracks';
 import {MENU, fetchAPI} from 'utils';
-import {useSelector, useDispatch} from 'react-redux';
+import {useAppSelector, useAppDispatch} from 'hooks';
 import {setUserId} from 'store/accountSlicer';
+import {
+  setPlaylistName,
+  setPlaylistDescription,
+  setPlaylistTracks,
+  setIsPlaylistCreated,
+} from 'store/spotifySlicer';
 import {
   faCheck,
   faChevronCircleRight,
   faChevronCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import toast, {Toaster} from 'react-hot-toast';
+import type {ToastPosition} from 'react-hot-toast';
+
 /**
  * CreatePlaylist component
  * @return {JSX.Element}
  */
-function CreatePlaylist() {
-  const userId = useSelector((state) => state.account.userId);
+function CreatePlaylist(): JSX.Element {
+  const userId = useAppSelector((state) => state.account.userId);
+  const playlistName = useAppSelector((state) => state.spotify.playlistName);
+  const playlistDescription = useAppSelector(
+    (state) => state.spotify.playlistDescription,
+  );
+  const playlistTracks = useAppSelector(
+    (state) => state.spotify.playlistTracks,
+  );
+  const isPlaylistCreated = useAppSelector(
+    (state) => state.spotify.isPlaylistCreated,
+  );
   const [activeStep, setActiveStep] = useState(0);
-  const [searchResult, setSearchResult] = useState('');
-  const [searchOffset, setSearchOffset] = useState(0);
-  const [playlistName, setPlaylistName] = useState('');
-  const [playlistDescription, setPlaylistDescription] = useState('');
-  const [playlistTracks, setPlaylistTracks] = useState([]);
-  const [submitPlaylistResult, setSubmitPlaylistResult] = useState({});
+  const [submitPlaylistResult, setSubmitPlaylistResult] = useState<
+    | {
+        status: string;
+        message: string;
+        url: string;
+      }
+    | {}
+  >({});
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const notify = (message, type) => {
-    const CONFIG_NOTIFY = {
+  const notify = (message: string, type: 'success' | 'error') => {
+    const CONFIG_NOTIFY: {
+      position: ToastPosition;
+      autoClose: number;
+      hideProgressBar: boolean;
+      closeOnClick: boolean;
+      pauseOnHover: boolean;
+    } = {
       position: 'bottom-center',
       autoClose: 5000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
-      draggable: true,
     };
     if (type === 'success') {
       toast.success(message, CONFIG_NOTIFY);
@@ -80,7 +105,9 @@ function CreatePlaylist() {
             fetchAPI(
               `/playlists/${playlistId}/tracks`,
               {
-                uris: playlistTracks.map((track) => track.uri),
+                uris: playlistTracks.map(
+                  (track: SpotifyApi.TrackObjectFull) => track.uri,
+                ),
               },
               'POST',
             )
@@ -97,9 +124,10 @@ function CreatePlaylist() {
                     message: `Playlist created successfully`,
                     url: addPlaylist.external_urls.spotify,
                   });
-                  setPlaylistName('');
-                  setPlaylistDescription('');
-                  setPlaylistTracks([]);
+                  dispatch(setPlaylistName(''));
+                  dispatch(setPlaylistDescription(''));
+                  dispatch(setPlaylistTracks([]));
+                  dispatch(setIsPlaylistCreated(true));
                   notify('Playlist Created!', 'success');
                 }
               })
@@ -137,55 +165,41 @@ function CreatePlaylist() {
   return (
     <div className="mb-8">
       <AppStepper steps={MENU} activeStep={activeStep}></AppStepper>
-      {activeStep === 0 && (
-        <CreatePlaylistSearch
-          searchResult={searchResult}
-          setSearchResult={setSearchResult}
-          searchOffset={searchOffset}
-          setSearchOffset={setSearchOffset}
-          playlistTracks={playlistTracks}
-          setPlaylistTracks={setPlaylistTracks}
-        ></CreatePlaylistSearch>
-      )}
-      {activeStep === 1 && (
-        <CreatePlaylistForm
-          playlistName={playlistName}
-          setPlaylistName={setPlaylistName}
-          playlistDescription={playlistDescription}
-          setPlaylistDescription={setPlaylistDescription}
-        ></CreatePlaylistForm>
-      )}
+      {activeStep === 0 && <CreatePlaylistSearch />}
+      {activeStep === 1 && <CreatePlaylistForm />}
       {activeStep === 2 && (
         <div className="my-5">
           <div className="block mx-auto max-w-md w-auto text-center text-white mb-6">
-            {submitPlaylistResult.status === 'success' && (
-              <div
-                className="bg-green-100 rounded-lg py-5 px-6 mb-6 text-base
+            {'status' in submitPlaylistResult &&
+              submitPlaylistResult.status === 'success' && (
+                <div
+                  className="bg-green-100 rounded-lg py-5 px-6 mb-6 text-base
                 text-green-700"
-                role="alert"
-              >
-                {submitPlaylistResult.message}
-                <a
-                  href={submitPlaylistResult.url}
-                  className="bg-green-500 hover:bg-green-600 px-5 py-2 text-sm leading-5
+                  role="alert"
+                >
+                  {submitPlaylistResult.message}
+                  <a
+                    href={submitPlaylistResult.url}
+                    className="bg-green-500 hover:bg-green-600 px-5 py-2 text-sm leading-5
                   rounded-full font-semibold text-white block mx-auto w-fit mt-3
                   transition ease-in-out duration-75 hover:scale-105"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    View here
+                  </a>
+                </div>
+              )}
+            {'status' in submitPlaylistResult &&
+              submitPlaylistResult.status === 'error' && (
+                <div
+                  className="bg-red-100 rounded-lg py-5 px-6 mb-6 text-base text-red-700"
+                  role="alert"
                 >
-                  View here
-                </a>
-              </div>
-            )}
-            {submitPlaylistResult.status === 'error' && (
-              <div
-                className="bg-red-100 rounded-lg py-5 px-6 mb-6 text-base text-red-700"
-                role="alert"
-              >
-                {submitPlaylistResult.message}
-              </div>
-            )}
-            {submitPlaylistResult.status === undefined && (
+                  {submitPlaylistResult.message}
+                </div>
+              )}
+            {!('status' in submitPlaylistResult) && (
               <>
                 <h1 className="font-bold text-lg leading-tight">
                   Your Playlist Details :
@@ -200,17 +214,17 @@ function CreatePlaylist() {
               </>
             )}
           </div>
-          {submitPlaylistResult.status === undefined && (
+          {!('status' in submitPlaylistResult) && (
             <>
-              <Tracks
-                playlist={playlistTracks}
-                setPlaylist={setPlaylistTracks}
-                songData={
-                  playlistTracks.length > 0
-                    ? playlistTracks
-                    : 'Please select some tracks'
-                }
-              ></Tracks>
+              {playlistTracks.length > 0 ? (
+                <Tracks songData={playlistTracks}></Tracks>
+              ) : (
+                <div className="text-center text-white">
+                  <h1 className="font-bold text-lg leading-tight">
+                    Please add at least one track
+                  </h1>
+                </div>
+              )}
             </>
           )}
         </div>
@@ -219,7 +233,7 @@ function CreatePlaylist() {
         className="max-w-xl min-w-[200px] mx-auto px-5
       flex justify-end my-7"
       >
-        {activeStep > 0 && (
+        {activeStep > 0 && !isPlaylistCreated && (
           <AppButton
             buttonTheme="primary"
             buttonText="Previous Step"
@@ -230,7 +244,7 @@ function CreatePlaylist() {
             buttonIconPosition="back"
           ></AppButton>
         )}
-        {activeStep < MENU.length - 1 && (
+        {activeStep < MENU.length - 1 && !isPlaylistCreated && (
           <AppButton
             buttonTheme="primary"
             buttonText="Next Step"
@@ -241,7 +255,7 @@ function CreatePlaylist() {
             buttonIconPosition="front"
           ></AppButton>
         )}
-        {activeStep === MENU.length - 1 && (
+        {activeStep === MENU.length - 1 && !isPlaylistCreated && (
           <AppButton
             buttonTheme={'primary'}
             buttonText="Finish"
