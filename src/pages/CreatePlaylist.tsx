@@ -12,6 +12,7 @@ import {
   setPlaylistDescription,
   setPlaylistTracks,
   setIsPlaylistCreated,
+  setSearchResult,
 } from 'store/spotifySlicer';
 import {
   faCheck,
@@ -19,7 +20,7 @@ import {
   faChevronCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import toast, {Toaster} from 'react-hot-toast';
-import type {ToastPosition} from 'react-hot-toast';
+import type {Toast} from 'react-hot-toast';
 
 /**
  * CreatePlaylist component
@@ -50,18 +51,13 @@ function CreatePlaylist(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const notify = (message: string, type: 'success' | 'error') => {
-    const CONFIG_NOTIFY: {
-      position: ToastPosition;
-      autoClose: number;
-      hideProgressBar: boolean;
-      closeOnClick: boolean;
-      pauseOnHover: boolean;
-    } = {
+    const CONFIG_NOTIFY: Partial<Toast> = {
       position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
+      style: {
+        background: '#333',
+        color: '#fff',
+      },
+      duration: 5000,
     };
     if (type === 'success') {
       toast.success(message, CONFIG_NOTIFY);
@@ -81,6 +77,11 @@ function CreatePlaylist(): JSX.Element {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    activeStep === 1 && dispatch(setSearchResult([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeStep]);
 
   const createPlaylist = () => {
     if (playlistName && playlistDescription && playlistTracks.length > 0) {

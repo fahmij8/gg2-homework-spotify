@@ -23,13 +23,10 @@ function Search(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const debounced = setTimeout(() => {
+    const debounce = setTimeout(() => {
       fetchResults(searchOffset);
     }, 500);
-
-    return () => {
-      clearTimeout(debounced);
-    };
+    return () => clearTimeout(debounce);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchOffset, searchQuery]);
 
@@ -58,7 +55,6 @@ function Search(): JSX.Element {
         if (typeof data.error !== 'undefined') {
           dispatch(setSearchResult(data.error.message));
         } else {
-          console.log(data);
           if (isTopTracks) {
             dispatch(setSearchResult(data.items));
             dispatch(setSearchLimit(data.total));
