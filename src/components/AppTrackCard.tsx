@@ -30,6 +30,7 @@ function TrackCard({song}: TrackCardProps): JSX.Element {
         `rounded-lg p-2 hover:bg-zinc-700 `
       }
       variants={itemVariant}
+      data-testid="track-card"
     >
       <div className="basis-20 shrink-0">
         <img

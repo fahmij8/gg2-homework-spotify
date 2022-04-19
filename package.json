@@ -59,6 +59,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.29.4",
+    "msw": "^0.39.2",
     "postcss": "^8.4.12",
     "tailwindcss": "^3.0.23"
   }
