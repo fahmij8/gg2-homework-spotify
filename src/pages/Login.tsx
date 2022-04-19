@@ -1,29 +1,14 @@
-import {useEffect} from 'react';
-import {useAppDispatch} from 'hooks';
-import {setAccessToken, setTokenType} from 'store/accountSlicer';
 import {LOGIN_URL} from 'utils';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpotify} from '@fortawesome/free-brands-svg-icons';
-import {GlobalObject} from 'types';
+import {useSpotifyAuth} from 'hooks';
 
 /**
  * Login component
  * @return {JSX.Element}
  */
 function Login(): JSX.Element {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    const urlParams: string[] = window.location.hash.substring(1).split('&');
-    const params: GlobalObject = {};
-    urlParams.forEach((param: string) => {
-      const keyValue: string[] = param.split('=');
-      params[keyValue[0]] = keyValue[1];
-    });
-    params.access_token && dispatch(setAccessToken(params.access_token));
-    params.token_type && dispatch(setTokenType(params.token_type));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useSpotifyAuth();
 
   return (
     <div className="my-8 mx-6">
