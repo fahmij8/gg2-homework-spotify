@@ -26,26 +26,28 @@ function Track({
 
   return (
     <div className="flex flex-col mx-6 sm:mx-11 md:mx-20">
-      {isTopTracks && (
-        <h6 className="text-md text-center font-normal text-white mb-5">
-          Displaying your top tracks
-        </h6>
-      )}
       {typeof songData === 'string' && (
         <h2 className="text-md text-center font-bold text-white">{songData}</h2>
       )}
       {typeof songData === 'object' && songData.length > 0 && !isLoading && (
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={trackListVariants}
-          className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-3
+        <>
+          {isTopTracks && (
+            <h6 className="text-md text-center font-normal text-white mb-5">
+              Displaying your top tracks
+            </h6>
+          )}
+          <motion.div
+            initial="hidden"
+            animate="show"
+            variants={trackListVariants}
+            className="grid lg:grid-cols-3 md:grid-cols-2 gap-x-3
       gap-y-5 xl:gap-x-6"
-        >
-          {songData.map((song) => {
-            return <AppTrackCard key={song.id} song={song}></AppTrackCard>;
-          })}
-        </motion.div>
+          >
+            {songData.map((song) => {
+              return <AppTrackCard key={song.id} song={song}></AppTrackCard>;
+            })}
+          </motion.div>
+        </>
       )}
     </div>
   );
