@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Spotify Playlist Maker - Generasi Gigih 2.0 Homework
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Deployed at Vercel, please visit [here](https://gg2-homework-spotify.vercel.app/).
 
 ## Available Scripts
 
