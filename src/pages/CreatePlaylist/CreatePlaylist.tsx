@@ -4,8 +4,8 @@ import AppButton from 'components/AppButton';
 import CreatePlaylistSearch from 'components/CreatePlaylistSearch';
 import CreatePlaylistForm from 'components/CreatePlaylistForm';
 import Tracks from 'components/Tracks';
-import {MENU, fetchAPI} from 'utils';
-import {useAppSelector, useAppDispatch} from 'hooks';
+import {MENU, fetchAPI, notify} from 'utils';
+import {useAppSelector, useAppDispatch, useSpotifyApi} from 'hooks';
 import {setUser} from 'store/accountSlicer';
 import {
   setPlaylistName,
@@ -19,14 +19,30 @@ import {
   faChevronCircleRight,
   faChevronCircleLeft,
 } from '@fortawesome/free-solid-svg-icons';
-import toast, {Toaster} from 'react-hot-toast';
-import type {Toast} from 'react-hot-toast';
+import {Toaster} from 'react-hot-toast';
 
 /**
  * CreatePlaylist component
  * @return {JSX.Element}
  */
 function CreatePlaylist(): JSX.Element {
+  const warnNotWhitelistedUser = (): void => {
+    notify('Your email is not whitelisted', 'error');
+    notify('Send your email to address below and get whitelisted', 'error');
+    notify('fahmijabbar12@gmail.com', 'error');
+  };
+
+  const dispatch = useAppDispatch();
+  const {data, error} = useSpotifyApi<SpotifyApi.UserObjectPrivate>('/me');
+  useEffect(() => {
+    if (data) {
+      dispatch(setUser(data));
+    } else if (error) {
+      warnNotWhitelistedUser();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, error]);
+
   const user = useAppSelector((state) => state.account.user?.id);
   const playlistName = useAppSelector((state) => state.spotify.playlistName);
   const playlistDescription = useAppSelector(
@@ -48,123 +64,92 @@ function CreatePlaylist(): JSX.Element {
     | {}
   >({});
 
-  const dispatch = useAppDispatch();
-
-  const notify = (message: string, type: 'success' | 'error') => {
-    const CONFIG_NOTIFY: Partial<Toast> = {
-      position: 'bottom-center',
-      style: {
-        background: '#333',
-        color: '#fff',
-      },
-      duration: 5000,
-    };
-    if (type === 'success') {
-      toast.success(message, CONFIG_NOTIFY);
-    } else if (type === 'error') {
-      toast.error(message, CONFIG_NOTIFY);
-    }
-  };
-
-  useEffect(() => {
-    fetchAPI('/me')
-      .then((data) => {
-        dispatch(setUser(data));
-      })
-      .catch((error) => {
-        notify('Error getting user data!', 'error');
-        console.error(error);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   useEffect(() => {
     activeStep === 1 && dispatch(setSearchResult([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeStep]);
 
   const createPlaylist = () => {
-    if (playlistName && playlistDescription && playlistTracks.length > 0) {
-      fetchAPI(
-        `/users/${user}/playlists`,
-        {
-          name: playlistName,
-          description: playlistDescription,
-          public: false,
-        },
-        'POST',
-      )
-        .then((addPlaylist) => {
-          if (typeof addPlaylist.error !== 'undefined') {
-            console.error(addPlaylist.error);
-            setSubmitPlaylistResult({
-              status: 'error',
-              message: addPlaylist.error.message,
-            });
-          } else {
-            const playlistId = addPlaylist.id;
-            fetchAPI(
-              `/playlists/${playlistId}/tracks`,
-              {
-                uris: playlistTracks.map(
-                  (track: SpotifyApi.TrackObjectFull) => track.uri,
-                ),
-              },
-              'POST',
-            )
-              .then((data) => {
-                if (typeof data.error !== 'undefined') {
-                  console.error(data.error);
-                  setSubmitPlaylistResult({
-                    status: 'error',
-                    message: data.error.message,
-                  });
-                } else {
-                  setSubmitPlaylistResult({
-                    status: 'success',
-                    message: `Playlist created successfully`,
-                    url: addPlaylist.external_urls.spotify,
-                  });
-                  dispatch(setPlaylistName(''));
-                  dispatch(setPlaylistDescription(''));
-                  dispatch(setPlaylistTracks([]));
-                  dispatch(setIsPlaylistCreated(true));
-                  notify('Playlist Created!', 'success');
-                }
-              })
-              .catch((error) => {
-                console.error(error);
-                notify(
-                  'Something unexpected happen, please refresh the page',
-                  'error',
-                );
-              });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-          notify(
-            'Something unexpected happen, please refresh the page',
-            'error',
-          );
-        });
-    } else if (user === null) {
-      notify(
-        `Sorry, your user id are not listed on our end. 
-        Please contact author for further information`,
+    if (!user) return warnNotWhitelistedUser();
+    if (!playlistName || playlistName.length < 10) {
+      return notify('Playlist name must be at least 10 characters', 'error');
+    }
+    if (!playlistDescription || playlistDescription.length < 10) {
+      return notify(
+        'Playlist description must be at least 10 characters',
         'error',
       );
-    } else if (!playlistName) {
-      notify('Please enter a playlist name', 'error');
-    } else if (!playlistDescription) {
-      notify('Please enter a playlist description', 'error');
-    } else if (playlistTracks.length === 0) {
-      notify('Please add at least one track', 'error');
     }
+    if (!playlistTracks || playlistTracks.length < 1) {
+      return notify('Playlist must have at least 1 track', 'error');
+    }
+    fetchAPI(
+      `/users/${user}/playlists`,
+      {
+        name: playlistName,
+        description: playlistDescription,
+        public: false,
+      },
+      'POST',
+    )
+      .then((addPlaylist) => {
+        if (typeof addPlaylist.error !== 'undefined') {
+          console.error(addPlaylist.error);
+          setSubmitPlaylistResult({
+            status: 'error',
+            message: addPlaylist.error.message,
+          });
+          notify('Playlist not created', 'error');
+        } else {
+          const playlistId = addPlaylist.id;
+          fetchAPI(
+            `/playlists/${playlistId}/tracks`,
+            {
+              uris: playlistTracks.map(
+                (track: SpotifyApi.TrackObjectFull) => track.uri,
+              ),
+            },
+            'POST',
+          )
+            .then((data) => {
+              if (typeof data.error !== 'undefined') {
+                console.error(data.error);
+                setSubmitPlaylistResult({
+                  status: 'error',
+                  message: data.error.message,
+                });
+                notify('Tracks not added to playlist', 'error');
+              } else {
+                setSubmitPlaylistResult({
+                  status: 'success',
+                  message: `Playlist created successfully`,
+                  url: addPlaylist.external_urls.spotify,
+                });
+                dispatch(setPlaylistName(''));
+                dispatch(setPlaylistDescription(''));
+                dispatch(setPlaylistTracks([]));
+                dispatch(setIsPlaylistCreated(true));
+                notify('Playlist Created!', 'success');
+              }
+            })
+            .catch((error) => {
+              console.error(error);
+              notify(
+                'Something unexpected happen, please refresh the page',
+                'error',
+              );
+            });
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        notify('Something unexpected happen, please refresh the page', 'error');
+      });
   };
 
   return (
     <div className="mb-8">
+      <Toaster />
       <AppStepper steps={MENU} activeStep={activeStep}></AppStepper>
       {activeStep === 0 && <CreatePlaylistSearch />}
       {activeStep === 1 && <CreatePlaylistForm />}
@@ -270,7 +255,6 @@ function CreatePlaylist(): JSX.Element {
           ></AppButton>
         )}
       </div>
-      <Toaster />
     </div>
   );
 }
