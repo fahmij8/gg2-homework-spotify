@@ -31,3 +31,15 @@ export const CONFIG_NOTIFY: Partial<Toast> = {
   },
   duration: 5000,
 };
+export const pagesVariant = {
+  initial: {
+    opacity: 0,
+  },
+  animated: {
+    opacity: 1,
+    transition: {
+      duration: 0.2,
+      ease: 'easeInOut',
+    },
+  },
+};

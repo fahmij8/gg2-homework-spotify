@@ -1,6 +1,8 @@
 import {LOGIN_URL} from 'utils';
+import {motion} from 'framer-motion';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpotify} from '@fortawesome/free-brands-svg-icons';
+import {pagesVariant} from 'utils';
 
 /**
  * Login component
@@ -8,7 +10,12 @@ import {faSpotify} from '@fortawesome/free-brands-svg-icons';
  */
 function Login(): JSX.Element {
   return (
-    <div className="mx-6 pb-16">
+    <motion.div
+      className="mx-6 pb-16"
+      variants={pagesVariant}
+      initial="initial"
+      animate="animated"
+    >
       <h2 className="text-3xl text-center font-semibold text-white">
         Login first to use the service
       </h2>
@@ -23,7 +30,7 @@ function Login(): JSX.Element {
         <FontAwesomeIcon icon={faSpotify} className="mr-1"></FontAwesomeIcon>
         Login with Spotify
       </a>
-    </div>
+    </motion.div>
   );
 }
 
