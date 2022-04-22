@@ -1,15 +1,12 @@
 import {LOGIN_URL} from 'utils';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSpotify} from '@fortawesome/free-brands-svg-icons';
-import {useSpotifyAuth} from 'hooks';
 
 /**
  * Login component
  * @return {JSX.Element}
  */
 function Login(): JSX.Element {
-  useSpotifyAuth();
-
   return (
     <div className="my-8 mx-6">
       <h2 className="text-3xl text-center mt-14 font-semibold text-white">

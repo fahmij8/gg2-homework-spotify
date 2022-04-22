@@ -1,20 +1,17 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 import {useAppSelector} from 'hooks';
 import AppHeader from 'components/AppHeader';
 import AppFooter from 'components/AppFooter';
 import Login from 'pages/Login';
 import CreatePlaylist from 'pages/CreatePlaylist';
+import {useSpotifyAuth} from 'hooks';
 
 /**
  * App component
  * @return {JSX.Element}
  */
 function App(): JSX.Element {
+  useSpotifyAuth();
   const accessToken = useAppSelector((state) => state.account.accessToken);
 
   return (
@@ -28,27 +25,25 @@ function App(): JSX.Element {
     >
       <AppHeader></AppHeader>
       <div className="flex-grow">
-        <Router>
-          <Switch>
-            <Route path="/create-playlist">
-              {accessToken ? (
-                <CreatePlaylist></CreatePlaylist>
-              ) : (
-                <Redirect push to="/"></Redirect>
-              )}
-            </Route>
-            <Route exact path="/">
-              {accessToken ? (
-                <Redirect push to="/create-playlist"></Redirect>
-              ) : (
-                <Login></Login>
-              )}
-            </Route>
-            <Route path="*">
-              <Redirect to="/"></Redirect>
-            </Route>
-          </Switch>
-        </Router>
+        <Switch>
+          <Route path="/create-playlist">
+            {accessToken ? (
+              <CreatePlaylist></CreatePlaylist>
+            ) : (
+              <Redirect push to="/"></Redirect>
+            )}
+          </Route>
+          <Route exact path="/">
+            {accessToken ? (
+              <Redirect push to="/create-playlist"></Redirect>
+            ) : (
+              <Login></Login>
+            )}
+          </Route>
+          <Route path="*">
+            <Redirect to="/"></Redirect>
+          </Route>
+        </Switch>
       </div>
       <AppFooter></AppFooter>
     </div>
