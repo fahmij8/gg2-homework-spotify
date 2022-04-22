@@ -20,7 +20,7 @@ export const accountSlicer = createSlice({
     },
     setUser: (
       state,
-      action: PayloadAction<SpotifyApi.UserProfileResponse | null>,
+      action: PayloadAction<SpotifyApi.UserObjectPrivate | null>,
     ) => {
       state.user = action.payload;
     },
