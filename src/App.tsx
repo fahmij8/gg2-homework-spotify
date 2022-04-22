@@ -12,7 +12,7 @@ import {useSpotifyAuth} from 'hooks';
  */
 function App(): JSX.Element {
   useSpotifyAuth();
-  const accessToken = useAppSelector((state) => state.account.accessToken);
+  const isLoggedIn = useAppSelector((state) => state.account.accessToken);
 
   return (
     <div
@@ -24,17 +24,21 @@ function App(): JSX.Element {
       }}
     >
       <AppHeader></AppHeader>
-      <div className="flex-grow">
+      <div
+        className={`flex-grow ${
+          !isLoggedIn ? 'flex items-center justify-center' : ''
+        }`}
+      >
         <Switch>
           <Route path="/create-playlist">
-            {accessToken ? (
+            {isLoggedIn ? (
               <CreatePlaylist></CreatePlaylist>
             ) : (
               <Redirect push to="/"></Redirect>
             )}
           </Route>
           <Route exact path="/">
-            {accessToken ? (
+            {isLoggedIn ? (
               <Redirect push to="/create-playlist"></Redirect>
             ) : (
               <Login></Login>

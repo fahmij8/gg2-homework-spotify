@@ -8,8 +8,8 @@ import {faSpotify} from '@fortawesome/free-brands-svg-icons';
  */
 function Login(): JSX.Element {
   return (
-    <div className="my-8 mx-6">
-      <h2 className="text-3xl text-center mt-14 font-semibold text-white">
+    <div className="mx-6 pb-16">
+      <h2 className="text-3xl text-center font-semibold text-white">
         Login first to use the service
       </h2>
       <a
