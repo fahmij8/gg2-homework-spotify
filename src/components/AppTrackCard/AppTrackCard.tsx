@@ -1,4 +1,4 @@
-import AppButton from './AppButton';
+import AppButton from '../AppButton';
 import {motion} from 'framer-motion';
 import {TrackCardProps} from 'types';
 import {useAppSelector, useAppDispatch} from 'hooks';
@@ -67,7 +67,6 @@ function TrackCard({song}: TrackCardProps): JSX.Element {
             buttonText="Remove"
             buttonSize="small"
             buttonClick={() => {
-              console.log(playlistTracks, song);
               dispatch(
                 setPlaylistTracks(
                   playlistTracks.filter(

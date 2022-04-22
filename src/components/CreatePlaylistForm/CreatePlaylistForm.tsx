@@ -1,5 +1,5 @@
-import AppInput from './AppInput';
-import AppTextarea from './AppTextarea';
+import AppInput from '../AppInput';
+import AppTextarea from '../AppTextarea';
 import {useAppDispatch, useAppSelector} from 'hooks';
 import {setPlaylistName, setPlaylistDescription} from 'store/spotifySlicer';
 

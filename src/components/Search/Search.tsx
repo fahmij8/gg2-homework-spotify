@@ -2,7 +2,7 @@ import {faSearch, faSpinner} from '@fortawesome/free-solid-svg-icons';
 import {useEffect, useState} from 'react';
 import {fetchAPI} from 'utils/helper';
 import AppInput from 'components/AppInput';
-import AppButton from './AppButton';
+import AppButton from '../AppButton';
 import {useAppDispatch, useAppSelector} from 'hooks';
 import {
   setSearchResult,

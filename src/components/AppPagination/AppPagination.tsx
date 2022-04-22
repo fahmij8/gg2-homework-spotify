@@ -1,4 +1,4 @@
-import AppButton from './AppButton';
+import AppButton from '../AppButton';
 import {motion} from 'framer-motion';
 import {faAnglesRight, faAnglesLeft} from '@fortawesome/free-solid-svg-icons';
 import {useAppSelector, useAppDispatch} from 'hooks';

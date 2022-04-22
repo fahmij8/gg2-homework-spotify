@@ -4,10 +4,10 @@ import {rest} from 'msw';
 import {setupServer} from 'msw/node';
 import {render, screen} from '@testing-library/react';
 import {Provider} from 'react-redux';
-import {store} from 'store';
+import {store} from '../../store';
 import {act} from 'react-dom/test-utils';
 import CreatePlaylistSearch from './CreatePlaylistSearch';
-import searchSample from 'utils/sample';
+import searchSample from '../../utils/sample';
 
 const server = setupServer(
   rest.get('/sampleResults', (_, res, ctx) => {

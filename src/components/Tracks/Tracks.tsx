@@ -1,4 +1,4 @@
-import AppTrackCard from './AppTrackCard';
+import AppTrackCard from '../AppTrackCard';
 import {motion} from 'framer-motion';
 import {useAppSelector} from 'hooks';
 
