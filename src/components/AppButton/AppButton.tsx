@@ -51,6 +51,7 @@ function AppButton({
       type={buttonType}
       data-mdb-ripple="true"
       data-mdb-ripple-color="light"
+      data-mdb-ripple-unbound="true"
       whileHover={{scale: 1.1}}
       whileTap={{scale: 0.9}}
       {...rest}
