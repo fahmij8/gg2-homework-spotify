@@ -75,7 +75,7 @@ function TrackCard({song}: TrackCardProps): JSX.Element {
                 ),
               );
             }}
-            buttonClass="rounded-lg mt-1"
+            buttonClass="rounded-lg mt-2"
           ></AppButton>
         ) : (
           <AppButton
@@ -85,7 +85,7 @@ function TrackCard({song}: TrackCardProps): JSX.Element {
             buttonClick={() => {
               dispatch(setPlaylistTracks([...playlistTracks, song]!));
             }}
-            buttonClass="rounded-lg mt-1"
+            buttonClass="rounded-lg mt-2"
           ></AppButton>
         )}
       </div>
