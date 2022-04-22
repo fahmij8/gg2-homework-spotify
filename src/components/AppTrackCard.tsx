@@ -67,11 +67,12 @@ function TrackCard({song}: TrackCardProps): JSX.Element {
             buttonText="Remove"
             buttonSize="small"
             buttonClick={() => {
+              console.log(playlistTracks, song);
               dispatch(
                 setPlaylistTracks(
                   playlistTracks.filter(
-                    (eachTrack) => eachTrack !== song,
-                  ) as never,
+                    (eachTrack) => eachTrack.id !== song.id,
+                  )!,
                 ),
               );
             }}
@@ -83,7 +84,7 @@ function TrackCard({song}: TrackCardProps): JSX.Element {
             buttonText="Add"
             buttonSize="small"
             buttonClick={() => {
-              dispatch(setPlaylistTracks([...playlistTracks, song] as never));
+              dispatch(setPlaylistTracks([...playlistTracks, song]!));
             }}
             buttonClass="rounded-lg mt-1"
           ></AppButton>
