@@ -6,7 +6,7 @@ import CreatePlaylistForm from 'components/CreatePlaylistForm';
 import Tracks from 'components/Tracks';
 import {MENU, fetchAPI} from 'utils';
 import {useAppSelector, useAppDispatch} from 'hooks';
-import {setUserId} from 'store/accountSlicer';
+import {setUser} from 'store/accountSlicer';
 import {
   setPlaylistName,
   setPlaylistDescription,
@@ -27,7 +27,7 @@ import type {Toast} from 'react-hot-toast';
  * @return {JSX.Element}
  */
 function CreatePlaylist(): JSX.Element {
-  const userId = useAppSelector((state) => state.account.userId?.id);
+  const user = useAppSelector((state) => state.account.user?.id);
   const playlistName = useAppSelector((state) => state.spotify.playlistName);
   const playlistDescription = useAppSelector(
     (state) => state.spotify.playlistDescription,
@@ -69,7 +69,7 @@ function CreatePlaylist(): JSX.Element {
   useEffect(() => {
     fetchAPI('/me')
       .then((data) => {
-        dispatch(setUserId(data));
+        dispatch(setUser(data));
       })
       .catch((error) => {
         notify('Error getting user data!', 'error');
@@ -86,7 +86,7 @@ function CreatePlaylist(): JSX.Element {
   const createPlaylist = () => {
     if (playlistName && playlistDescription && playlistTracks.length > 0) {
       fetchAPI(
-        `/users/${userId}/playlists`,
+        `/users/${user}/playlists`,
         {
           name: playlistName,
           description: playlistDescription,
@@ -148,7 +148,7 @@ function CreatePlaylist(): JSX.Element {
             'error',
           );
         });
-    } else if (userId === null) {
+    } else if (user === null) {
       notify(
         `Sorry, your user id are not listed on our end. 
         Please contact author for further information`,

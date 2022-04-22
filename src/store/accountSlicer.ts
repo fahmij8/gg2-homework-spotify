@@ -5,7 +5,7 @@ import {AccountState} from 'types';
 const initialState: AccountState = {
   accessToken: '',
   tokenType: '',
-  userId: null,
+  user: null,
 };
 
 export const accountSlicer = createSlice({
@@ -18,15 +18,15 @@ export const accountSlicer = createSlice({
     setTokenType: (state, action: PayloadAction<string>) => {
       state.tokenType = action.payload;
     },
-    setUserId: (
+    setUser: (
       state,
       action: PayloadAction<SpotifyApi.UserProfileResponse | null>,
     ) => {
-      state.userId = action.payload;
+      state.user = action.payload;
     },
   },
 });
 
-export const {setAccessToken, setTokenType, setUserId} = accountSlicer.actions;
+export const {setAccessToken, setTokenType, setUser} = accountSlicer.actions;
 
 export default accountSlicer.reducer;

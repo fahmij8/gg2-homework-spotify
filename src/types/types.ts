@@ -3,7 +3,7 @@ import type {IconDefinition} from '@fortawesome/fontawesome-svg-core';
 export type AccountState = {
   accessToken: string;
   tokenType: string;
-  userId: SpotifyApi.UserProfileResponse | null;
+  user: SpotifyApi.UserProfileResponse | null;
 };
 
 export type SpotifyAppState = {
