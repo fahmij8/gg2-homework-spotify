@@ -1,6 +1,8 @@
 import {API_URL} from './globalVariable';
 import {store} from 'store';
 import {GlobalObject} from 'types';
+import {CONFIG_NOTIFY} from 'utils';
+import toast from 'react-hot-toast';
 
 export const fetchAPI = (
   uri: string,
@@ -25,4 +27,12 @@ export const fetchAPI = (
       .then((data) => resolve(data))
       .catch((error) => reject(error));
   });
+};
+
+export const notify = (message: string, type: 'success' | 'error') => {
+  if (type === 'success') {
+    toast.success(message, CONFIG_NOTIFY);
+  } else if (type === 'error') {
+    toast.error(message, CONFIG_NOTIFY);
+  }
 };
