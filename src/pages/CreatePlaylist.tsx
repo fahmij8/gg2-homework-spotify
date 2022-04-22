@@ -27,7 +27,7 @@ import type {Toast} from 'react-hot-toast';
  * @return {JSX.Element}
  */
 function CreatePlaylist(): JSX.Element {
-  const userId = useAppSelector((state) => state.account.userId);
+  const userId = useAppSelector((state) => state.account.userId?.id);
   const playlistName = useAppSelector((state) => state.spotify.playlistName);
   const playlistDescription = useAppSelector(
     (state) => state.spotify.playlistDescription,
@@ -69,7 +69,7 @@ function CreatePlaylist(): JSX.Element {
   useEffect(() => {
     fetchAPI('/me')
       .then((data) => {
-        dispatch(setUserId(data.id));
+        dispatch(setUserId(data));
       })
       .catch((error) => {
         notify('Error getting user data!', 'error');
@@ -148,7 +148,7 @@ function CreatePlaylist(): JSX.Element {
             'error',
           );
         });
-    } else if (userId === '') {
+    } else if (userId === null) {
       notify(
         `Sorry, your user id are not listed on our end. 
         Please contact author for further information`,
