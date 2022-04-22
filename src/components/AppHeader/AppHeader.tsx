@@ -100,7 +100,7 @@ function AppHeader(): JSX.Element {
               </div>
             </div>
           </div>
-          <div className="w-full max-w-[300px] block mx-auto mt-4 md:mt-0">
+          <div className="w-full max-w-[300px] block mx-auto mt-7 md:mt-0">
             <Logo></Logo>
           </div>
         </>
