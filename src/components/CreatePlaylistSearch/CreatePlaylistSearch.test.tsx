@@ -2,7 +2,7 @@
 /* eslint-disable testing-library/no-unnecessary-act */
 import {rest} from 'msw';
 import {setupServer} from 'msw/node';
-import {render, screen} from '@testing-library/react';
+import {fireEvent, render, screen} from '@testing-library/react';
 import {Provider} from 'react-redux';
 import {store} from '../../store';
 import {act} from 'react-dom/test-utils';
@@ -50,6 +50,8 @@ describe('Test search & card component', () => {
       expect(card).toHaveTextContent(mockResult[index].artists[0].name);
       expect(card).toHaveTextContent(mockResult[index].album.name);
       expect(card).toHaveTextContent('Add');
+      fireEvent.click(screen.getByText('Add'));
+      expect(card).toHaveTextContent('Remove');
     });
   });
 });
