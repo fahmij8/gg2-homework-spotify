@@ -23,6 +23,7 @@ function Search(): JSX.Element {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(setIsLoading(true));
     const debounce = setTimeout(() => {
       fetchResults(searchOffset);
     }, 500);
@@ -41,7 +42,6 @@ function Search(): JSX.Element {
   };
 
   const fetchResults = (searchOffsetArg: number) => {
-    dispatch(setIsLoading(true));
     let uri;
     if (isTopTracks) {
       uri = `/me/top/tracks?limit=12&offset=${searchOffsetArg}`;
@@ -53,6 +53,10 @@ function Search(): JSX.Element {
     fetchAPI(uri)
       .then((data) => {
         if (typeof data.error !== 'undefined') {
+          if (data.error.status === 401) {
+            dispatch(setIsLoading(false));
+            window.location.reload();
+          }
           dispatch(setSearchResult(data.error.message));
         } else {
           if (isTopTracks) {
