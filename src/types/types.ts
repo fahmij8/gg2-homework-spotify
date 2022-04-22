@@ -16,6 +16,7 @@ export type SpotifyAppState = {
   isTopTracks: boolean;
   isLoading: boolean;
   isPlaylistCreated: boolean;
+  currentPlayingSong: string | null;
 };
 
 export type StepperProps = {

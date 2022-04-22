@@ -1,6 +1,7 @@
 import AppTrackCard from '../AppTrackCard';
 import {motion} from 'framer-motion';
 import {useAppSelector} from 'hooks';
+import {useEffect, useRef} from 'react';
 
 /**
  * Tracks component
@@ -11,6 +12,10 @@ function Track({
 }: {
   songData: SpotifyApi.TrackObjectFull[] | [] | string;
 }): JSX.Element {
+  const audioPlayer = useRef(new Audio());
+  const currentPlayingSong = useAppSelector(
+    (state) => state.spotify.currentPlayingSong,
+  );
   const trackListVariants = {
     hidden: {opacity: 0},
     show: {
@@ -21,8 +26,22 @@ function Track({
     },
   };
 
-  const isTopTracks = useAppSelector((state) => state.spotify.isTopTracks);
   const isLoading = useAppSelector((state) => state.spotify.isLoading);
+
+  useEffect(() => {
+    if (currentPlayingSong) {
+      audioPlayer.current.pause();
+      audioPlayer.current.src = currentPlayingSong;
+      audioPlayer.current.volume = 0.5;
+      audioPlayer.current.play();
+    } else {
+      audioPlayer.current.pause();
+    }
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      audioPlayer.current.pause();
+    };
+  }, [currentPlayingSong]);
 
   return (
     <div className="flex flex-col mx-6 sm:mx-11 md:mx-20">
@@ -31,11 +50,6 @@ function Track({
       )}
       {typeof songData === 'object' && songData.length > 0 && !isLoading && (
         <>
-          {isTopTracks && (
-            <h6 className="text-md text-center font-normal text-white mb-5">
-              Displaying your top tracks
-            </h6>
-          )}
           <motion.div
             initial="hidden"
             animate="show"

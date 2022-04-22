@@ -12,6 +12,7 @@ const initialState: SpotifyAppState = {
   isTopTracks: true,
   isLoading: false,
   isPlaylistCreated: false,
+  currentPlayingSong: null,
 };
 
 export const spotifySlicer = createSlice({
@@ -72,6 +73,12 @@ export const spotifySlicer = createSlice({
     ) => {
       state.isPlaylistCreated = action.payload;
     },
+    setCurrentPlayingSong: (
+      state,
+      action: PayloadAction<SpotifyAppState['currentPlayingSong']>,
+    ) => {
+      state.currentPlayingSong = action.payload;
+    },
   },
 });
 
@@ -85,6 +92,7 @@ export const {
   setIsTopTracks,
   setIsLoading,
   setIsPlaylistCreated,
+  setCurrentPlayingSong,
 } = spotifySlicer.actions;
 
 export default spotifySlicer.reducer;
