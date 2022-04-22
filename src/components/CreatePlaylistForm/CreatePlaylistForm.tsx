@@ -17,12 +17,12 @@ function CreatePlaylistForm(): JSX.Element {
   return (
     <div className="my-5 max-w-xl min-w-[200px] block mx-auto px-5">
       <div className="flex justify-center">
-        <div className="block p-6 w-full rounded-lg shadow-lg bg-zinc-700">
+        <div className="block w-full">
           <h5
             className="text-zinc-50 text-xl text-center
             leading-tight font-medium mb-2"
           >
-            Enter your playlist detail
+            Enter your playlist details
           </h5>
           <AppInput
             inputType="text"
@@ -34,8 +34,12 @@ function CreatePlaylistForm(): JSX.Element {
             inputOnChange={(e) => dispatch(setPlaylistName(e.target.value))}
             inputValue={playlistName}
             autoComplete="off"
-            minLength="10"
           ></AppInput>
+          {playlistName.length < 10 && (
+            <p className="text-red-600 text-sm my-2">
+              Playlist name must be at least 10 characters long
+            </p>
+          )}
           <AppTextarea
             areaName="playlistDescription"
             areaLabel="Playlist Description"
@@ -47,6 +51,11 @@ function CreatePlaylistForm(): JSX.Element {
             }
             areaValue={playlistDescription}
           ></AppTextarea>
+          {playlistDescription.length < 10 && (
+            <p className="text-red-600 text-sm my-2">
+              Playlist description must be at least 10 characters long
+            </p>
+          )}
         </div>
       </div>
     </div>
