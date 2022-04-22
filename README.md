@@ -1,70 +1,69 @@
-# Spotify Playlist Maker - Generasi Gigih 2.0 Homework
+# <img src="./public/favicon.ico" width="32"/> Playlistlab - Your Spotify Playlist Maker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Deployed at Vercel, please visit [here](https://gg2-homework-spotify.vercel.app/).
+Fancy way to create your spotify playlist. This application provides you to create playlist seamlessly with cool searching & recommendation feature for your playlist track selection. Integrated with your spotify account, so whatever you create here will be reflected in your spotify account. See live preview [here](https://gg2-homework-spotify.vercel.app/).
 
-## Available Scripts
+![image](https://user-images.githubusercontent.com/58651943/164752963-ac540427-40b9-46dc-a232-20d6fa41bf93.png)
 
-In the project directory, you can run:
+## Built Using
 
-### `npm start`
+- ⚛️ [Create React App](https://create-react-app.dev/) to Initialize Project
+- Written in [Typescript](https://www.typescriptlang.org/)
+- Spotify API
+- [Redux Toolkit](https://redux-toolkit.js.org/) & [React Redux](https://react-redux.js.org/) as State Management
+- [Tailwind CSS](https://tailwindcss.com/) & [Tailwind Elements](https://tailwind-elements.com/) for styling
+- [Framer-motion](https://www.framer.com/motion/) for the cool animation & transition 😎
+- [React Testing Library](https://testing-library.com/) & [Mock Service Worker](https://mswjs.io/) for testing
+- 🚀 Deployed in Vercel
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Feature
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Login to your Spotify Account (using implicit grant authentication)
+- Search tracks for your playlist
+- Give your playlist a name & description
+- Submit your playlist and see it the result in your Spotify account!
 
-### `npm test`
+### Additional Feature
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- See your profile, followers & current product status (premium/free)
 
-### `npm run build`
+![image](https://user-images.githubusercontent.com/58651943/164756508-7a6ec522-a7e2-42a3-8a5f-a605afc2668a.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Get your top tracks right away in track selection
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![image](https://user-images.githubusercontent.com/58651943/164756692-a3fda05f-93b2-4e12-846e-0e5de82a5ad8.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Enhanced searching with pagination
 
-### `npm run eject`
+![image](https://user-images.githubusercontent.com/58651943/164756790-7369f55f-3f16-439a-b402-a25bf5510cb6.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- A mini player to listen to your track!🌟
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![image](https://user-images.githubusercontent.com/58651943/164756876-e72c0ed0-d1a4-4b2e-8aa9-ccd6e3b5e67e.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Cool transition & animation!🎉
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+![rec2](https://user-images.githubusercontent.com/58651943/164757536-ac35dab9-79de-44b4-bf98-0c6034af91c6.gif)
 
-## Learn More
+- Retained user access according to expire access token🎊
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Installation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Clone this repo
 
-### Code Splitting
+```
+git clone https://github.com/fahmij8/gg2-homework-spotify.git
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Install dependency
 
-### Analyzing the Bundle Size
+```
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Create your .env according to .env.example
 
-### Making a Progressive Web App
+- Start the server, it will automatically open your browser
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```
+npm run start
+```
